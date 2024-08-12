@@ -1,5 +1,6 @@
 "use client";
 import { FormEvent, useState } from "react";
+import generateRecipe from "@/actions/generateRecipe";
 
 export default function CreatePage() {
   const [ingredients, setIngredients] = useState<string[]>([]);
@@ -10,6 +11,8 @@ export default function CreatePage() {
         e.preventDefault();
         setLoading(true);
         console.log(ingredients);
+        generateRecipe(ingredients);
+        
     } catch (error) {
         console.log(error);
     } finally {
