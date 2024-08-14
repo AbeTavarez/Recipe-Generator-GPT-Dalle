@@ -1,9 +1,23 @@
 "use server";
 import OpenAI from "openai";
+import {v2 as cloudiary} from 'cloudinary';
+import mongoDBClient from '@/db';
+import { redirect } from "next/navigation";
 
+// OPENAI Client
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+// Cloudirary Client
+cloudiary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET_KEY
+});
+
 export default async function generateRecipe(ingredients: string[]) {
+    const db = await mongoDBClient.db('recipe_generator');
+    let recipePath;
+
   try {
     console.log(ingredients);
 
@@ -62,12 +76,32 @@ export default async function generateRecipe(ingredients: string[]) {
          });
 
          console.log(imageCompletion);
-        
 
+         const imageURL = imageCompletion.data[0].url;
 
+         // Store image in cloudinary
+         const imageFileName = recipeTitle.split(' ').join('_').toLowerCase();
+
+         const uploadResult = await cloudiary.uploader.upload(imageURL!, {
+            public_id: imageFileName
+         });
+
+         console.log(uploadResult);
          
+         // Store recipe and image in MongoDB
+         const savedRecipe = await db.collection('recipes').insertOne({
+            recipe_title: recipeTitle,
+            recipe_content: content,
+            recipe_image: uploadResult.url
+         });
+
+         console.log(savedRecipe);
+         
+         recipePath = savedRecipe.insertedId;
 
   } catch (error) {
     console.log(error);
+  } finally {
+    redirect(`/recipe/${recipePath}`);
   }
 }

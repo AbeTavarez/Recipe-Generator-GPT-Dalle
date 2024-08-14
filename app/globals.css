@@ -2,3 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer base {
+    article {
+
+    }
+
+    section {
+        @apply p-5
+    }
+
+    header h1 {
+        @apply text-3xl font-bold font-serif py-2
+    }
+
+    h2 {
+        @apply text-2xl font-bold font-serif py-2 
+    }
+
+    ul li {
+        @apply list-disc
+    }
+
+    ol li {
+        @apply list-decimal
+    }
+
+
+}
