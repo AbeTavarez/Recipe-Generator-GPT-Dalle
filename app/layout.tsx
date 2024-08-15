@@ -19,9 +19,18 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <nav className="flex justify-around px-20 py-5 border-b-2">
-          <Link href="/">Home</Link>
-          <Link href="/create">Create</Link>
-          <Link href="/#how_it_works">How it Works</Link>
+          <Link className="hover:underline" href="/">
+            Home
+          </Link>
+          <Link className="hover:underline" href="/create">
+            Create
+          </Link>
+          <Link className="hover:underline" href="/recipes">
+            Recipes
+          </Link>
+          <Link className="hover:underline" href="/#how_it_works">
+            How it Works
+          </Link>
         </nav>
         {children}
         <footer className="px-20 py-5 border-t-2">
