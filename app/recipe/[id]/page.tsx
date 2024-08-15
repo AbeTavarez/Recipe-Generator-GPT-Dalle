@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getRecipeById } from "@/actions";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 type RecipeProps = {
   params: {
@@ -21,8 +22,10 @@ export default async function RecipePage({ params }: RecipeProps) {
   return (
     <div className="flex flex-col justify-center items-center p-24 lg:flex-row lg:gap-10">
       <div>
-        
-        <div className="text-2xl font-bold font-serif">{recipe_title}</div>
+
+        <Link href='/recipes' className="text-lg font-light hover:underline">Go back to all recipes</Link>
+
+        <div className="text-2xl font-bold font-serif mt-10">{recipe_title}</div>
 
         <div className="w-full h-auto my-5">
           <Image
